@@ -1,4 +1,4 @@
-name: check_workflowEvents
+name: 02-workflow-events
 on:
     workflow_dispatch:
     pull_request:
