@@ -4,5 +4,11 @@ jobs:
     ubuntu-echo:
           runs-on:  ubuntu-latest
           steps:
-            - name: runs on ubutu
+            - name: show OS
+              run: echo "I am running this code in $RUNNER_OS"
+
+    windows-echo:
+          runs-on: windows-latest
+          steps:
+            - name: Show OS
               run: echo "I am running this code in $RUNNER_OS"
