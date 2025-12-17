@@ -11,4 +11,4 @@ jobs:
           runs-on: windows-latest
           steps:
             - name: Show OS
-              run: echo "I am running this code in $RUNNER_OS"
+              run: echo "I am running this code in $env:RUNNER_OS"
