@@ -5,11 +5,7 @@ jobs:
     build:
        runs-on: ubuntu-latest
        steps:
-         - name: checkout code
-           run: echo "Checkout code"
-    
-    printingFolder:
-        runs-on: ubuntu-latest
-        steps:
-            - name: printing folders
-              run: echo "Printing Folders"
+        - name: checkout code
+          uses: actions/checkout@v4
+        - name: printing folders
+          run: ls
