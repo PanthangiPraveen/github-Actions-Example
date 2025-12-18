@@ -5,10 +5,13 @@ jobs:
           runs-on:  ubuntu-latest
           steps:
             - name: show OS
-              run: echo "I am running this code in $RUNNER_OS"
+              run: |
+                    echo "I am running this code  on ubuntu"
+                    echo "the os is OS: $RUNNER_OS"
 
     windows-echo:
           runs-on: windows-latest
           steps:
             - name: Show OS
-              run: echo "I am running this code in $env:RUNNER_OS"
+              shell: bash
+              run: echo "I am running this code in $RUNNER_OS"
