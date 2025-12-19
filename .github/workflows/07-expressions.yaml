@@ -2,6 +2,11 @@ name: 07 - Using Expressions
 on:
     push:
     workflow_dispatch:
+        inputs:
+            debug:
+              description: "Enable debug output"
+              type: boolean
+              default: false
 jobs:
     echo:
       runs-on: ubuntu-latest
