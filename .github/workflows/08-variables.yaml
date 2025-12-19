@@ -1,32 +1,34 @@
 name: 08 - Using Variables
 on: 
-    push:
-    workflow_dispatch:
-env:
-    WORKFLOW_VAR: "I am workflow level env. "
-    OVERWRITTEN: " I have been overwritten at the workflow level"
-jobs:
-    echo:
-        runs-on: ubuntu-latest
-        env:
-            JOB_VAR: "I am job level env"
-            OVERWRITTEN: " I have been overwritten at the job level"
-        steps:
-            - name: print env variables
-              env:
-                STEP_VAR1: "I am a step env var"
-                step_var2: "I am antoher env var"
-                OVERWRITTEN: " I have been overwritten at the step level"
-              run: |
-                echo "Step env var: ${{env.STEP_VAR1}}"
-                echo "Step env var2: $STEP_VAR2"
-                echo "job env var: ${{env.JOB_VAR}}"
-                echo "workflow env var: ${{env.WORKFLOW_VAR}}"
-                echo "overwrittern env var: ${{env.OVERWRITTEN}}"
+  push:
+  workflow_dispatch:
 
-            - name: overwritten job veriable
-              env:
-                OVERWRITTEN: " i overwritten at step level"
-              run: |
-                  echo "overwrittern env var: ${{env.OVERWRITTEN}}"
+env:
+  WORKFLOW_VAR: "I am workflow level env."
+  OVERWRITTEN: "I have been overwritten at the workflow level"
+
+jobs:
+  echo:
+    runs-on: ubuntu-latest
+    env:
+      JOB_VAR: "I am job level env"
+      OVERWRITTEN: "I have been overwritten at the job level"
+    steps:
+      - name: Print env variables
+        env:
+          STEP_VAR1: "I am a step env var"
+          STEP_VAR2: "I am another env var"
+          OVERWRITTEN: "I have been overwritten at the step level"
+        run: |
+          echo "Step env var1: $STEP_VAR1"
+          echo "Step env var2: $STEP_VAR2"
+          echo "Job env var: $JOB_VAR"
+          echo "Workflow env var: $WORKFLOW_VAR"
+          echo "Overwritten env var: $OVERWRITTEN"
+
+      - name: Overwritten job variable
+        env:
+          OVERWRITTEN: "I overwritten at step level"
+        run: |
+          echo "Overwritten env var: $OVERWRITTEN"
 
