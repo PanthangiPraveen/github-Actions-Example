@@ -1,0 +1,22 @@
+name: 09-Using-Functions
+on:
+    push:
+    workflow_dispatch:
+jobs:
+    echo1:
+        runs-on: ubuntu-latest
+        steps:
+          - name: failing step
+            run: exit 1
+          - name: I will be skipped
+            if: ${{ success() }}
+            run: echo "I will print if pervious step is success"
+          - name: i will be executed
+            if: ${{ failure() }}
+            run: echo "i will print if previous step is fialed"
+          - name: I will excute
+            if: ${{ !cancelled() }}
+            run: echo "I will alwasys print, excpet when the workflow is cancleed"
+          - name: i will execute when cancelled
+            if : ${{cancelled()}}
+            run: echo " i will prient if workflow is cancleed "
