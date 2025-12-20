@@ -1,0 +1,35 @@
+name: 11 - working inputs
+on: 
+    workflow_dispatch:
+        inputs:
+            dry-run:
+                type: boolean
+                description: Skip deployment and only print build output
+                default: false
+            target:
+                type: environment
+                description: which enviroment of target 
+                required: true
+            tag:
+                type: choice
+                description: we can chosse the choice of version
+                options:
+                    - v1
+                    - v2
+                    - v3
+                default : v3
+
+
+jobs:
+    build: 
+        runs-on: ubuntu-latest
+        steps:
+            - name: Build
+              run: echo "Build form tage ${{inputs.tag}}"
+    deploy:
+        runs-on: ubuntu-latest
+        if: ${{ !inputs.dry-run }}
+        environment: ${{ inputs.target }}
+        steps:
+            - name: deploy
+              run: echo "Deploy to env ${{inputs.target}}"
