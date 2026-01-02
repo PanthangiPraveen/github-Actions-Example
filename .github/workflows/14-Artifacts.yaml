@@ -1,6 +1,10 @@
 name: 14-artifacts
 on:
     workflow_dispatch:
+
+env:
+  build-arifacts-key: app-${{ github.sha }}
+  test-converage-key: test-coverage-${{ github.sha }}
 jobs:
     test-build:
         runs-on: ubuntu-latest
@@ -24,13 +28,19 @@ jobs:
               if: steps.cache.outputs.cache-hit != 'true'
               run: npm ci
             - name: unit tests
-              run: npm run test
+              run: npm run test -- --coverage
+            - name: Upload test results
+              uses: actions/upload-atifcat@v4
+              with:
+                name: ${{ env.test-converage-key }}
+                path: 14-Artifacts/react-app/coverage
+
             - name: Build Code
               run: npm run build
             - name: upload build files
               uses: actions/upload-artifact@v4
               with:
-                name: app
+                name: ${{ env.build-arifacts-key }}
                 path: 14-Artifacts/react-app/build
               
     deploy:
@@ -40,7 +50,7 @@ jobs:
         - name: Download artifacts
           uses: actions/download-artifact@v4
           with:
-            name: app
+            name:  ${{ env.build-arifacts-key }}  
             path: build
         - name: show folder structure
           run: ls -R
