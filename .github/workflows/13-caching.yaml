@@ -1,0 +1,12 @@
+name: 13-using caching
+on:
+    workflow_dispatch:
+     inputs:
+        use-cache:
+          description: wherter to execute cache step
+          type: boolean
+          default: true
+
+jobs:
+    build:
+        runs-on: ubuntu-latest
