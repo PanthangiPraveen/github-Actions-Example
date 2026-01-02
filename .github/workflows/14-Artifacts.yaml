@@ -21,7 +21,7 @@ jobs:
                 path: 14-Artifacts/react-app/node_modules
                 key: deps-node-modules-${{ hashFiles('14-Artifacts/react-app/package-lock.json') }}
             - name: install dependencies
-              if: steps.cache.outputs.cache-hit != 'ture'
+              if: steps.cache.outputs.cache-hit != 'true'
               run: npm ci
             - name: unit tests
               run: npm run test
@@ -34,6 +34,7 @@ jobs:
                 path: 14-Artifacts/react-app/build
               
     deploy:
+      needs: test-build
       runs-on: ubuntu-latest
       steps:
         - name: Download artifacts
