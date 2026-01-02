@@ -30,7 +30,7 @@ jobs:
             - name: unit tests
               run: npm run test -- --coverage
             - name: Upload test results
-              uses: actions/upload-atifcat@v4
+              uses: actions/upload-artifact@v4
               with:
                 name: ${{ env.test-converage-key }}
                 path: 14-Artifacts/react-app/coverage
