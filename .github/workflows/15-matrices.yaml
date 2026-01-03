@@ -34,3 +34,17 @@ jobs:
         run: |
           echo "Running tests on OS ${{ matrix.os }} and NodeJs ${{ matrix.node-version }}"
           sleep 10
+      - name: upload test results
+        run: echo "uploading test results"
+
+  include-example:
+    name: ${{ matrix.color }}-${{ matrix.shape }}-${{ matrix.size }}
+    runs-on: ubuntu-latest
+    strategy:
+        matrix:
+            color: [red,green]
+            shape: [circle,square]
+            size: [small,big]
+            include: 
+              - color: red
+                shape: tringle
