@@ -41,10 +41,14 @@ jobs:
     name: ${{ matrix.color }}-${{ matrix.shape }}-${{ matrix.size }}
     runs-on: ubuntu-latest
     strategy:
-        matrix:
-            color: [red,Green]
-            shape: [Circle,Square]
-            size: [Small,Big]
-            include: 
-              - color: Red
-                shape: Tringle
+      matrix:
+        color: [red, green]
+        shape: [circle, square]
+        size: [small, big]
+        include:
+        - color: red
+          shape: triangle
+          size: small
+    steps:
+    - run: echo "Color=${{ matrix.color }}, Shape=${{ matrix.shape }}, Size=${{ matrix.size }}"
+
