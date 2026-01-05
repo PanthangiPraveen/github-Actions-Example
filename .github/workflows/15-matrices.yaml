@@ -42,9 +42,9 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
         matrix:
-            color: [red,green]
-            shape: [circle,square]
-            size: [small,big]
+            color: [red,Green]
+            shape: [Circle,Square]
+            size: [Small,Big]
             include: 
-              - color: red
-                shape: tringle
+              - color: Red
+                shape: Tringle
