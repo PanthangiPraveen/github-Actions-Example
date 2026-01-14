@@ -47,14 +47,14 @@ jobs:
         size: [small, big]
         include:
         - color: red
-          opacity: 75
+          opacity: 70
         - shape: circle
           opacity: 100
         - color: red
           shape: triangle
         - opacity: 50
         exclude:
-        - opacity: 75
+        - opacity: 70
     steps:
     - run: echo "Color=${{ matrix.color }}, Shape=${{ matrix.shape }}, Size=${{ matrix.size }}"
 
