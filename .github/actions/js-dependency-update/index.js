@@ -1,6 +1,10 @@
 const core = require('@actions/core');
 const exec = require('@actions/exec');
 const github = require('@actions/github');
+const setupGit = async ( ) => {
+    await exec.exec(`git config --global user.name "gh-automation"`);
+    await exec.exec(`git config --global user.email "gh-automation@email.com"`);
+};
 
 const validateBranchName = ({ branchName }) =>
   /^[a-zA-Z0-9_\-\.\/]+$/.test(branchName);
@@ -9,7 +13,7 @@ const validateDirectoryName = ({ dirName }) =>
 
 async function run() {
   const baseBranch = core.getInput('base-branch', { required: true });
-  const targetBranch = core.getInput('target-branch', { required: true });
+  const headBranch = core.getInput('headbranch', { required: true });
   const ghToken = core.getInput('gh-token', { required: true });
   const workingDir = core.getInput('working-directory', { required: true });
   const debug = core.getBooleanInput('debug');
@@ -26,9 +30,9 @@ async function run() {
     return;
   }
 
-  if (!validateBranchName({ branchName: targetBranch })) {
+  if (!validateBranchName({ branchName: headBranch })) {
     core.setFailed(
-      'Invalid target-branch name. Branch names should include only characters, numbers, hyphens, underscores, dots, and forward slashes.'
+      'Invalid head-branch name. Branch names should include only characters, numbers, hyphens, underscores, dots, and forward slashes.'
     );
     return;
   }
@@ -41,7 +45,7 @@ async function run() {
   }
 
   core.info(`[js-dependency-update] : base branch is ${baseBranch}`);
-  core.info(`[js-dependency-update] : target branch is ${targetBranch}`);
+  core.info(`[js-dependency-update] : head branch is ${headBranch}`);
   core.info(`[js-dependency-update] : working directory is ${workingDir}`);
 
   await exec.exec('npm update', [], {
@@ -58,9 +62,8 @@ async function run() {
 
   if (gitStatus.stdout.length > 0) {
     core.info('[js-dependency-update] : There are updates available!');
-    await exec.exec(`git config --global user.name "gh-automation"`);
-    await exec.exec(`git config --global user.email "gh-automation@email.com"`);
-    await exec.exec(`git checkout -b ${targetBranch}`, [], {
+    await setupGit();
+    await exec.exec(`git checkout -b ${headBranch}`, [], {
       ...commonExecOpts,
     });
     await exec.exec(`git add package.json package-lock.json`, [], {
@@ -69,7 +72,7 @@ async function run() {
     await exec.exec(`git commit -m "chore: update dependencies`, [], {
       ...commonExecOpts,
     });
-    await exec.exec(`git push -u origin ${targetBranch} --force`, [], {
+    await exec.exec(`git push -u origin ${headBranch} --force`, [], {
       ...commonExecOpts,
     });
 
@@ -82,7 +85,7 @@ async function run() {
         title: `Update NPM dependencies`,
         body: `This pull request updates NPM packages`,
         base: baseBranch,
-        head: targetBranch
+        head: headBranch
       });
     } catch (e) {
       core.error('[js-dependency-update] : Something went wrong while creating the PR. Check logs below.')
@@ -92,19 +95,7 @@ async function run() {
   } else {
     core.info('[js-dependency-update] : No updates at this point in time.');
   }
-  /*
-  [DONE] 1. Parse inputs:
-    1.1 base-branch from which to check for updates
-    1.2 target-branch to use to create the PR
-    1.3 Github Token for authentication purposes (to create PRs)
-    1.4 Working directory for which to check for dependencies
-  [DONE] 2. Execute the npm update command within the working directory
-  [DONE] 3. Check whether there are modified package*.json files
-  [DONE] 4. If there are modified files:
-    4.1 Add and commit files to the target-branch
-    4.2 Create a PR to the base-branch using the octokit API
-  [DONE] 5. Otherwise, conclude the custom action
-   */
+ 
 }
 
 run();
