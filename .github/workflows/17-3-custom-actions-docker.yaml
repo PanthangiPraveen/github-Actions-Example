@@ -1,5 +1,4 @@
-name: 17-3 - custom actions - Docker    
-
+name: 17 - 3 - Custom Actions - Docker
 
 on:
   workflow_dispatch:
@@ -7,16 +6,10 @@ on:
       url:
         type: string
         default: 'https://www.google.com'
-    
-
-permissions:
-  contents: write
-  pull-requests: write
 
 jobs:
   ping-url:
     runs-on: ubuntu-latest
-
     steps:
       - uses: actions/checkout@v4
       - name: Ping URL
