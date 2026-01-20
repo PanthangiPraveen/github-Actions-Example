@@ -1,12 +1,10 @@
 FROM python:alpine3.19
 
-WORKDIR /app
+WORKDIR /github/workspace
 
 COPY requirements.txt .
+RUN python -m pip install --no-cache-dir -r requirements.txt
 
-RUN python -V
-RUN pip install --no-cache-dir -r requirements.txt
+COPY main.py .
 
-COPY . .
-
-CMD [ "python", "main.py" ]
+CMD ["python", "main.py"]
